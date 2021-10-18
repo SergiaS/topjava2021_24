@@ -1,0 +1,37 @@
+table {
+    border: 3px solid darkblue;
+    border-spacing: 3px;
+}
+
+th {
+    color: whitesmoke;
+    background-color: darkblue;
+}
+
+tr {
+    background-color: lightcyan;
+}
+
+th, td {
+    padding: 2px 5px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.inpL {
+    margin: 0 0 0 20px;
+}
+
+.my1 {
+    color: brown;
+}
+
+.exceeded {
+    color: red;
+}
+
+.notExceeded {
+    color: green;
+}
