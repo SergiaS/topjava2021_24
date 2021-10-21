@@ -7,6 +7,7 @@ import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -18,19 +19,23 @@ public class InMemoryMealRepository implements MealRepository {
     private final AtomicInteger counter = new AtomicInteger(0);
 
     {
-        MealsUtil.meals.forEach(meal -> save(meal,1));
-        MealsUtil.meals.forEach(meal -> save(meal,2));
+        MealsUtil.ADMINS_MEAL.forEach(meal -> save(meal,1));
+        MealsUtil.USERS_MEAL.forEach(meal -> save(meal,2));
     }
 
     @Override
     public Meal save(Meal meal, int userId) {
         Map<Integer, Meal> userMeals = repository.get(userId);
+        if (userMeals == null) {
+            userMeals = new HashMap<>();
+        }
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
             userMeals.put(meal.getId(), meal);
-            return meal;
         }
-        return userMeals.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
+        userMeals.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
+        repository.put(userId, userMeals);
+        return meal;
     }
 
     @Override
