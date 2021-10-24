@@ -9,6 +9,8 @@ import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.to.MealTo;
 import ru.javawebinar.topjava.util.MealsUtil;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Collection;
 
 import static ru.javawebinar.topjava.web.SecurityUtil.authUserId;
@@ -41,4 +43,12 @@ public class MealRestController {
         return MealsUtil.getTos(all, MealsUtil.DEFAULT_CALORIES_PER_DAY);
     }
 
+    public Collection<MealTo> filter(String startDate, String endDate, String startTime, String endTime) {
+        LocalDate sDate = startDate.isEmpty() ? LocalDate.ofYearDay(1970, 1) : LocalDate.parse(startDate);
+        LocalDate eDate = endDate.isEmpty() ? LocalDate.now() : LocalDate.parse(endDate);
+        LocalTime sTime = startTime.isEmpty() ? LocalTime.MIN : LocalTime.parse(startTime);
+        LocalTime eTime = endTime.isEmpty() ? LocalTime.MAX : LocalTime.parse(endTime);
+
+        return service.filter(sDate, eDate, sTime, eTime, authUserId());
+    }
 }
