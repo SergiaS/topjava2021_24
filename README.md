@@ -1,3 +1,6 @@
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/39b07862338d41a695cc946d9303297c)](https://www.codacy.com/gh/SergiaS/topjava2021_24/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SergiaS/topjava2021_24&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://app.travis-ci.com/SergiaS/topjava2021_24.svg?branch=main)](https://app.travis-ci.com/SergiaS/topjava2021_24)
+
 Java Enterprise Online Project
 ===============================
 
