@@ -9,7 +9,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
@@ -52,7 +51,6 @@ public class MealServiceTest {
     }
 
     @Test
-    @Transactional
     public void create() {
         Meal created = service.create(getNew(), USER_ID);
         int newId = created.id();
@@ -86,7 +84,6 @@ public class MealServiceTest {
     }
 
     @Test
-    @Transactional
     public void update() {
         Meal updated = getUpdated();
         service.update(updated, USER_ID);
