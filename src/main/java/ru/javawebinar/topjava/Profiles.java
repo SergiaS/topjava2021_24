@@ -2,7 +2,11 @@ package ru.javawebinar.topjava;
 
 import org.springframework.util.ClassUtils;
 
+import java.time.format.DateTimeFormatter;
+
 public class Profiles {
+    public static final DateTimeFormatter HSQLDB_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
     public static final String
             JDBC = "jdbc",
             JPA = "jpa",
@@ -14,7 +18,7 @@ public class Profiles {
             POSTGRES_DB = "postgres",
             HSQL_DB = "hsqldb";
 
-    public static final String DB_IMPLEMENTATION = POSTGRES_DB;
+    public static final String DB_IMPLEMENTATION = HSQL_DB;
 
     //  Get DB profile depending of DB driver in classpath
     public static String getActiveDbProfile() {
@@ -25,5 +29,9 @@ public class Profiles {
         } else {
             throw new IllegalStateException("Could not find DB driver");
         }
+    }
+
+    public static boolean isHsqldbProfile() {
+        return HSQL_DB.equals(getActiveDbProfile());
     }
 }
