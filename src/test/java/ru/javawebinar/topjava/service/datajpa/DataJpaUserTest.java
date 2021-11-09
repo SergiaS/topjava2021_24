@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.Profiles;
 import ru.javawebinar.topjava.service.UserServiceTest;
 
@@ -18,6 +19,7 @@ public class DataJpaUserTest extends UserServiceTest {
     }
 
     @Test
+    @Transactional
     @Override
     public void create() {
         super.create();
@@ -30,12 +32,14 @@ public class DataJpaUserTest extends UserServiceTest {
     }
 
     @Test
+    @Transactional
     @Override
     public void delete() {
         super.delete();
     }
 
     @Test
+    @Transactional
     @Override
     public void deletedNotFound() {
         super.deletedNotFound();
@@ -60,6 +64,7 @@ public class DataJpaUserTest extends UserServiceTest {
     }
 
     @Test
+    @Transactional
     @Override
     public void update() {
         super.update();
