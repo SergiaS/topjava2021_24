@@ -1,34 +1,19 @@
 package ru.javawebinar.topjava.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import ru.javawebinar.topjava.service.UserService;
-
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/")
 public class RootController {
-    @Autowired
-    private UserService service;
+
+    protected static final Logger log = LoggerFactory.getLogger(RootController.class);
 
     @GetMapping("/")
     public String root() {
         return "index";
-    }
-
-    @GetMapping("/users")
-    public String getUsers(Model model) {
-        model.addAttribute("users", service.getAll());
-        return "users";
-    }
-
-    @PostMapping("/users")
-    public String setUser(HttpServletRequest request) {
-        int userId = Integer.parseInt(request.getParameter("userId"));
-        SecurityUtil.setAuthUserId(userId);
-        return "redirect:meals";
     }
 }
