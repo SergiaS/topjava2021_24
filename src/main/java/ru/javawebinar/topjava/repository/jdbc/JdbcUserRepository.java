@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 
@@ -76,4 +77,26 @@ public class JdbcUserRepository implements UserRepository {
     public List<User> getAll() {
         return jdbcTemplate.query("SELECT * FROM users ORDER BY name, email", ROW_MAPPER);
     }
+
+    public List<String> getAllRoles(int id) {
+        return jdbcTemplate.queryForList("""
+                    SELECT ur.role FROM users u
+                    RIGHT JOIN user_roles ur on u.id = ur.user_id
+                    WHERE u.id = ?
+                    GROUP BY ur.role?
+                """, String.class, id);
+    }
+
+    @Transactional
+    public boolean deleteRole(int id, String role) {
+        return jdbcTemplate.update("DELETE FROM user_roles ur WHERE ur.user_id=?1 AND ur.role=?2", id, role) != 0;
+    }
+
+    @Transactional
+    public String updateRole(int id, String role) {
+        jdbcTemplate.update("UPDATE user_roles SET role=?1 WHERE user_id=?2", Role.class, role, id);
+        return role;
+    }
+
+
 }
