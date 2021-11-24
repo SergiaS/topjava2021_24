@@ -28,6 +28,9 @@ public class JdbcUserRepository implements UserRepository {
     private final SimpleJdbcInsert insertUser;
 
     @Autowired
+    private JdbcValidator validator;
+
+    @Autowired
     public JdbcUserRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.insertUser = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("users")
@@ -40,6 +43,8 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     @Transactional
     public User save(User user) {
+        validator.validate(user);
+
         BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(user);
 
         if (user.isNew()) {
@@ -62,15 +67,35 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public User get(int id) {
-        List<User> users = jdbcTemplate.query("SELECT * FROM users WHERE id=?", ROW_MAPPER, id);
+        List<User> users = jdbcTemplate.query("""
+                SELECT id, name, email, password, registered, enabled, calories_per_day, ur.role roles
+                FROM users u
+                RIGHT JOIN user_roles ur ON u.id = ur.user_id
+                WHERE ur.user_id=?
+                """, ROW_MAPPER, id);
         return DataAccessUtils.singleResult(users);
     }
 
     @Override
     public User getByEmail(String email) {
 //        return jdbcTemplate.queryForObject("SELECT * FROM users WHERE email=?", ROW_MAPPER, email);
-        List<User> users = jdbcTemplate.query("SELECT * FROM users WHERE email=?", ROW_MAPPER, email);
-        return DataAccessUtils.singleResult(users);
+        List<User> users = jdbcTemplate.query("""
+                SELECT id, name, email, password, registered, enabled, calories_per_day, ur.role roles
+                FROM users u
+                RIGHT JOIN user_roles ur ON u.id = ur.user_id
+                WHERE u.email=?
+                """, ROW_MAPPER, email);
+
+        User user;
+        if (users.size() > 1) {
+            user = users.get(0);
+            for (User u : users) {
+                user.getRoles().addAll(u.getRoles());
+            }
+        } else {
+            user = DataAccessUtils.singleResult(users);
+        }
+        return user;
     }
 
     @Override
@@ -78,13 +103,8 @@ public class JdbcUserRepository implements UserRepository {
         return jdbcTemplate.query("SELECT * FROM users ORDER BY name, email", ROW_MAPPER);
     }
 
-    public List<String> getAllRoles(int id) {
-        return jdbcTemplate.queryForList("""
-                    SELECT ur.role FROM users u
-                    RIGHT JOIN user_roles ur on u.id = ur.user_id
-                    WHERE u.id = ?
-                    GROUP BY ur.role?
-                """, String.class, id);
+    public List<Role> getAllRoles(int id) {
+        return jdbcTemplate.queryForList("SELECT ur.role FROM user_roles ur WHERE ur.user_id=?", Role.class, id);
     }
 
     @Transactional
