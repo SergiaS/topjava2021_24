@@ -42,7 +42,13 @@ public class MealsUtil {
         return new MealTo(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess);
     }
 
-    public static Meal createMeal(MealTo mealTo) {
+    public static Meal convertIntoMeal(MealTo mealTo) {
         return new Meal(mealTo.getId(), mealTo.getDateTime(), mealTo.getDescription(), mealTo.getCalories());
+    }
+
+    public static List<Meal> convertIntoMealList(List<MealTo> mealTos) {
+        return mealTos.stream()
+                .map(MealsUtil::convertIntoMeal)
+                .collect(Collectors.toList());
     }
 }

@@ -48,7 +48,7 @@ class RootControllerTest extends AbstractControllerTest {
                             @Override
                             public void assertion(List<MealTo> actual) throws AssertionError {
                                 List<Meal> convertedMeals = actual.stream()
-                                        .map(MealsUtil::createMeal)
+                                        .map(MealsUtil::convertIntoMeal)
                                         .collect(Collectors.toList());
 
                                 MEAL_MATCHER.assertMatch(convertedMeals, meals);
