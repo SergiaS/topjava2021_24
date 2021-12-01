@@ -147,3 +147,13 @@ Maven/ Spring/ Security/ JPA(Hibernate)/ REST(Jackson)/ Bootstrap(CSS)/ jQuery +
 
 ### 16.01.22: Дедлайн на сдачу [выпускного проекта](https://github.com/JavaOPs/topjava/blob/master/graduation.md)
 ### 26.01.22: Получение дипломов для участников [Дипломной программы](https://javaops.ru/view/register/diploma)
+
+## cURL commands for REST
+|Controller method  | REST address       | cURL command |
+|:-------           |:--------           |:-------- |
+|getAll             | /rest/meals        | `curl -v http://localhost:8080/topjava/rest/meals` |
+|get                | /rest/meals/100002 | `curl -v http://localhost:8080/topjava/rest/meals/100002` |
+|delete             | /rest/meals/100002 | `curl -X DELETE http://localhost:8080/topjava/rest/meals/100002` |
+|createWithLocation | /rest/meals        | `curl -X POST http://localhost:8080/topjava/rest/meals -H "content-type:application/json" -d "{ \"dateTime\":\"2021-12-01T11:30:00\",\"description\":\"BLA\",\"calories\":\"555\"}"` |
+|update             | /rest/meals/100011 | `curl -X PUT http://localhost:8080/topjava/rest/meals/100011 -H "content-type:application/json" -d "{ \"id\":\"100011\",\"dateTime\":\"2021-12-01T11:30:00\",\"description\":\"BLA\",\"calories\":\"666\"}"` |
+|getBetween         | /rest/meals/filter | `curl -v http://localhost:8080/topjava/rest/meals/filter?start=2020-01-30T00:15:30&end=2020-01-30T23:15:30` |
