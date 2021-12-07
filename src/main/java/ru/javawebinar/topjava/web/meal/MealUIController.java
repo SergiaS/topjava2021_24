@@ -9,6 +9,9 @@ import ru.javawebinar.topjava.to.MealTo;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalDate;
+import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalTime;
+
 @RestController
 @RequestMapping(value = "/profile/meals", produces = MediaType.APPLICATION_JSON_VALUE)
 public class MealUIController extends AbstractMealController {
@@ -32,5 +35,11 @@ public class MealUIController extends AbstractMealController {
                        @RequestParam String description,
                        @RequestParam int calories) {
         super.create(new Meal(LocalDateTime.parse(dateTime), description, calories));
+    }
+
+    @GetMapping("/filter")
+    public List<MealTo> getBetween(@RequestParam("startDate") String startDate, @RequestParam("startTime") String startTime,
+                                   @RequestParam("endDate") String endDate, @RequestParam("endTime") String endTime) {
+        return super.getBetween(parseLocalDate(startDate), parseLocalTime(startTime), parseLocalDate(endDate), parseLocalTime(endTime));
     }
 }

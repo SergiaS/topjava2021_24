@@ -17,6 +17,21 @@ function makeEditable(datatableApi) {
     $.ajaxSetup({cache: false});
 }
 
+function getBetween() {
+    let startDate = $("input[name=startDate]").val();
+    let endDate = $("input[name=endDate]").val();
+    let startTime = $("input[name=startTime]").val();
+    let endTime = $("input[name=endTime]").val();
+
+    $.ajax({
+        type: 'GET',
+        url: ctx.ajaxUrl + "filter?startDate=" + startDate + "&endDate=" + endDate + "&startTime=" + startTime + "&endTime=" + endTime
+    }).done(function (data) {
+        ctx.datatableApi.clear().rows.add(data).draw();
+        successNoty("Filtered");
+    });
+}
+
 function add() {
     form.find(":input").val("");
     $("#editRow").modal();

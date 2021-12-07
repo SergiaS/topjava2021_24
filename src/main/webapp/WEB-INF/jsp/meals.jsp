@@ -13,28 +13,34 @@
     <div class="container">
         <h3 class="text-center"><spring:message code="meal.title"/></h3>
 
-        <form method="get" action="meals/filter">
-            <div class="form-group">
-                <label for="startDate" class="col-form-label"><spring:message code="meal.startDate"/></label>
-                <input type="date" class="form-control" id="startDate" name="startDate" value="${param.startDate}">
+        <div class="">
+            <div class="form-row d-flex justify-content-left">
+                <div class="form-group col-md-2">
+                    <label for="startDate" class="col-form-label"><spring:message code="meal.startDate"/></label>
+                    <input type="date" class="form-control" id="startDate" name="startDate" value="${param.startDate}">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="endDate" class="col-form-label"><spring:message code="meal.endDate"/></label>
+                    <input type="date" class="form-control" id="endDate" name="endDate" value="${param.endDate}">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="endDate" class="col-form-label"><spring:message code="meal.endDate"/></label>
-                <input type="date" class="form-control" id="endDate" name="endDate" value="${param.endDate}">
+            <div class="form-row d-flex justify-content-right">
+                <div class="form-group col-md-2">
+                    <label for="startTime" class="col-form-label"><spring:message code="meal.startTime"/></label>
+                    <input type="time" class="form-control" id="startTime" name="startTime" value="${param.startTime}">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="endTime" class="col-form-label"><spring:message code="meal.endTime"/></label>
+                    <input type="time" class="form-control" id="endTime" name="endTime" value="${param.endTime}">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="startTime" class="col-form-label"><spring:message code="meal.startTime"/></label>
-                <input type="time" class="form-control" id="startTime" name="startTime" value="${param.startTime}">
-            </div>
-            <div class="form-group">
-                <label for="endTime" class="col-form-label"><spring:message code="meal.endTime"/></label>
-                <input type="time" class="form-control" id="endTime" name="endTime" value="${param.endTime}">
-            </div>
-            <button type="submit" class="btn btn-primary" onclick="save()">
+            <button type="submit" class="btn btn-primary" onclick="getBetween()">
                 <span class="fa fa-check"></span>
                 <spring:message code="meal.filter"/>
             </button>
-        </form>
+        </div>
+
+        <hr>
 
         <button class="btn btn-primary" onclick="add()">
             <span class="fa fa-plus"></span>
