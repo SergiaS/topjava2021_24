@@ -17,6 +17,15 @@ function makeEditable(datatableApi) {
     $.ajaxSetup({cache: false});
 }
 
+function cancel() {
+    $("input[name=startDate]").val('');
+    $("input[name=endDate]").val('');
+    $("input[name=startTime]").val('');
+    $("input[name=endTime]").val('');
+    updateTable();
+    successNoty("Canceled");
+}
+
 function getBetween() {
     let startDate = $("input[name=startDate]").val();
     let endDate = $("input[name=endDate]").val();

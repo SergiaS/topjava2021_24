@@ -38,6 +38,10 @@
                 <span class="fa fa-check"></span>
                 <spring:message code="meal.filter"/>
             </button>
+            <button type="submit" class="btn btn-danger" onclick="cancel()">
+                <span class="fa fa-check"></span>
+                <spring:message code="common.cancel"/>
+            </button>
         </div>
 
         <hr>
