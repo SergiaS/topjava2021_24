@@ -17,6 +17,22 @@ function makeEditable(datatableApi) {
     $.ajaxSetup({cache: false});
 }
 
+function enable() {
+    let isUserEnable = $("input[name=enabling]").val('');
+
+    $.ajax({
+        type: 'POST',
+        url: ctx.ajaxUrl + "enable/"
+    }).done(function (data) {
+        // if (isUserEnable) {
+        //     $("input[name=enabling]").removeClass("enable")
+        // } else {
+        //     $("input[name=enabling]").addClass("enable");
+        // }
+        ctx.datatableApi.clear().rows.add(data).draw();
+    })
+}
+
 function cancel() {
     $("input[name=startDate]").val('');
     $("input[name=endDate]").val('');
