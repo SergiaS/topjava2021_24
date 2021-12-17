@@ -97,3 +97,14 @@ function failNoty(jqXHR) {
     });
     failedNote.show()
 }
+
+function dateTimePicker(selector, date, time) {
+    const fmt = date && time ? 'Y-m-d H:i' :
+        date ? 'Y-m-d' : 'H:i';
+
+    $(selector).datetimepicker({
+        format: fmt,
+        datepicker: date,
+        timepicker: time,
+    });
+}

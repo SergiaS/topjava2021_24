@@ -5,6 +5,17 @@ const ctx = {
     ajaxUrl: mealAjaxUrl,
     updateTable: function () {
         $.get(mealAjaxUrl, updateTableByData);
+    },
+    filter: function filter() {
+        let inputs = $('#filter').find(":input");
+
+        let filterPath = mealAjaxUrl +
+            "filter?startDate=" + inputs[0].value +
+            "&startTime=" + inputs[2].value +
+            "&endDate=" + inputs[1].value +
+            "&endTime=" + inputs[3].value;
+
+        $.get(filterPath, updateTableByData);
     }
 }
 
