@@ -108,9 +108,24 @@ function renderDeleteBtn(data, type, row) {
 function failNoty(jqXHR) {
     closeNoty();
     var errorInfo = jqXHR.responseJSON;
+    var errors = errorInfo.detail.split("<br>");
+    var result = "";
+    for (const e of errors) {
+        let errorInProperty = e.substring(
+            e.indexOf('[') + 1,
+            e.lastIndexOf(']')
+        );
+        let fieldName = $('label[for="'+ errorInProperty + '"]').text();
+        let errorMsg = e.substring(e.lastIndexOf(']') + 2);
+        result += "[" + fieldName + "] " + i18n[errorMsg] + "<br>";
+    }
+
     failedNote = new Noty({
-        text: "<span class='fa fa-lg fa-exclamation-circle'></span> &nbsp;" + i18n["common.errorStatus"] + ": " + jqXHR.status +
-            "<br>" + errorInfo.type + "<br>" + errorInfo.detail,
+        text: jqXHR.status === 422 && errorInfo.type === "VALIDATION_ERROR" ?
+                "<span class='fa fa-lg fa-exclamation-circle'></span> &nbsp;" + i18n["common.errorValidation"] +
+                    "<br>" + result :
+                "<span class='fa fa-lg fa-exclamation-circle'></span> &nbsp;" + i18n["common.errorStatus"] + ": " + jqXHR.status +
+                    "<br>" + errorInfo.type + "<br>" + errorInfo.detail,
         type: "error",
         layout: "bottomRight"
     });

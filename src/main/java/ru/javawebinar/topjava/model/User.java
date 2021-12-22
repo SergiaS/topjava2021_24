@@ -36,14 +36,14 @@ public class User extends AbstractNamedEntity {
     public static final String ALL_SORTED = "User.getAllSorted";
 
     @Column(name = "email", nullable = false, unique = true)
-    @Email
-    @NotBlank
-    @Size(max = 100)
+    @Email(message = "error.email")
+    @NotBlank(message = "error.notNull")
+    @Size(max = 100, message = "error.emailSize")
     private String email;
 
     @Column(name = "password", nullable = false)
-    @NotBlank
-    @Size(min = 5, max = 100)
+    @NotBlank(message = "error.notNull")
+    @Size(min = 5, max = 100, message = "error.password")
     // https://stackoverflow.com/a/12505165/548473
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
@@ -52,7 +52,7 @@ public class User extends AbstractNamedEntity {
     private boolean enabled = true;
 
     @Column(name = "registered", nullable = false, columnDefinition = "timestamp default now()", updatable = false)
-    @NotNull
+    @NotNull(message = "error.notNull")
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date registered = new Date();
 
@@ -69,7 +69,7 @@ public class User extends AbstractNamedEntity {
     private Set<Role> roles;
 
     @Column(name = "calories_per_day", nullable = false, columnDefinition = "int default 2000")
-    @Range(min = 10, max = 10000)
+    @Range(min = 10, max = 10000, message = "error.caloriesPerDay")
     private int caloriesPerDay = DEFAULT_CALORIES_PER_DAY;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")//, cascade = CascadeType.REMOVE, orphanRemoval = true)

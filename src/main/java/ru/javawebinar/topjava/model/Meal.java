@@ -34,25 +34,25 @@ public class Meal extends AbstractBaseEntity {
     public static final String GET_BETWEEN = "Meal.getBetween";
 
     @Column(name = "date_time", nullable = false)
-    @NotNull
+    @NotNull(message = "error.notNull")
     @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
     private LocalDateTime dateTime;
 
     @Column(name = "description", nullable = false)
-    @NotBlank
-    @Size(min = 2, max = 120)
+    @NotBlank(message = "error.notNull")
+    @Size(min = 2, max = 120, message = "error.descSize")
     private String description;
 
     @Column(name = "calories", nullable = false)
-    @NotNull
-    @Range(min = 10, max = 5000)
+    @NotNull(message = "error.notNull")
+    @Range(min = 10, max = 5000, message = "error.rangeNum")
     private Integer calories;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonBackReference
-    @NotNull(groups = View.Persist.class)
+    @NotNull(groups = View.Persist.class, message = "error.notNull")
     private User user;
 
     public Meal() {
