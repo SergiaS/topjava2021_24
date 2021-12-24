@@ -2,11 +2,17 @@ package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,12 +23,20 @@ import ru.javawebinar.topjava.util.exception.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
+
 import static ru.javawebinar.topjava.util.exception.ErrorType.*;
 
 @RestControllerAdvice(annotations = RestController.class)
 @Order(Ordered.HIGHEST_PRECEDENCE + 5)
 public class ExceptionInfoHandler {
     private static Logger log = LoggerFactory.getLogger(ExceptionInfoHandler.class);
+
+    @Autowired
+    private ReloadableResourceBundleMessageSource resourceBundle;
 
     //  http://stackoverflow.com/a/22358422/548473
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
@@ -44,9 +58,20 @@ public class ExceptionInfoHandler {
     }
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)    // 422
-    @ExceptionHandler(ValidationUIException.class)
-    public static ErrorInfo getErrorResponse(HttpServletRequest req, ValidationUIException e) {
-        return new ErrorInfo(req.getRequestURL(), VALIDATION_ERROR, e.getMessage());
+    @ExceptionHandler(ValidException.class)
+    public static ErrorInfo getErrorResponse(HttpServletRequest req, ValidException e) {
+        return new ErrorInfo(req.getRequestURL(), VALIDATION_ERROR, List.of(e.getMessage()));
+    }
+
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)    // 422
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ErrorInfo getValidationResponse(HttpServletRequest req, MethodArgumentNotValidException e) {
+        List<String> errorList = e.getFieldErrors().stream()
+                .map(fe -> String.format("[%s] %s", getMessageByLocale(
+                        e.getBindingResult().getObjectName() + "." + fe.getField()),
+                        getMessageByLocale(fe.getDefaultMessage())))
+                .collect(Collectors.toList());
+        return new ErrorInfo(req.getRequestURL(), VALIDATION_ERROR, errorList);
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -63,6 +88,10 @@ public class ExceptionInfoHandler {
         } else {
             log.warn("{} at request  {}: {}", errorType, req.getRequestURL(), rootCause.toString());
         }
-        return new ErrorInfo(req.getRequestURL(), errorType, rootCause.toString());
+        return new ErrorInfo(req.getRequestURL(), errorType, List.of(rootCause.toString()));
+    }
+
+    private String getMessageByLocale(String commandError) {
+        return resourceBundle.getMessage(commandError, null, LocaleContextHolder.getLocale());
     }
 }

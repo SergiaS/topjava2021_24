@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.to.MealTo;
 import ru.javawebinar.topjava.util.ValidationUtil;
-import ru.javawebinar.topjava.util.exception.ValidationUIException;
+import ru.javawebinar.topjava.util.exception.ValidException;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -42,7 +42,7 @@ public class MealUIController extends AbstractMealController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void createOrUpdate(@Valid Meal meal, BindingResult result) {
         if (result.hasErrors()) {
-            throw new ValidationUIException(ValidationUtil.getErrorResponse(result));
+            throw new ValidException(ValidationUtil.getErrorResponse(result));
         }
         if (meal.isNew()) {
             super.create(meal);

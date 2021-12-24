@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.to.UserTo;
 import ru.javawebinar.topjava.util.ValidationUtil;
-import ru.javawebinar.topjava.util.exception.ValidationUIException;
+import ru.javawebinar.topjava.util.exception.ValidException;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -39,7 +39,7 @@ public class AdminUIController extends AbstractUserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void createOrUpdate(@Valid UserTo userTo, BindingResult result) {
         if (result.hasErrors()) {
-            throw new ValidationUIException(ValidationUtil.getErrorResponse(result));
+            throw new ValidException(ValidationUtil.getErrorResponse(result));
         }
         if (userTo.isNew()) {
             super.create(userTo);
