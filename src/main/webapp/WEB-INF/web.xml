@@ -10,12 +10,19 @@
         <param-name>spring.profiles.default</param-name>
         <param-value>postgres,datajpa</param-value>
     </context-param>
+    
+    <context-param>
+        <param-name>contextClass</param-name>
+<!--        <param-value>org.springframework.web.context.support.XmlWebApplicationContext</param-value>-->
+        <param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+    </context-param>
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            classpath:spring/spring-app.xml
-            classpath:spring/spring-db.xml
+            classpath:ru/javawebinar/topjava/config/AppMainSpringConfig.java
+<!--            classpath:spring/spring-app.xml-->
+<!--            classpath:spring/spring-db.xml-->
         </param-value>
     </context-param>
 
@@ -59,12 +66,12 @@
     </filter-mapping>
 
     <!-- Spring Security -->
-    <filter>
-        <filter-name>springSecurityFilterChain</filter-name>
-        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>springSecurityFilterChain</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+<!--    <filter>-->
+<!--        <filter-name>springSecurityFilterChain</filter-name>-->
+<!--        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>-->
+<!--    </filter>-->
+<!--    <filter-mapping>-->
+<!--        <filter-name>springSecurityFilterChain</filter-name>-->
+<!--        <url-pattern>/*</url-pattern>-->
+<!--    </filter-mapping>-->
 </web-app>

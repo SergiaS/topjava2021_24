@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.javawebinar.topjava.util.validation.ValidationUtil.getRootCause;
 
 @SpringJUnitConfig(locations = {
-        "classpath:spring/spring-app.xml",
+//        "classpath:spring/spring-app.xml",
         "classpath:spring/spring-db.xml"
 })
 //@ExtendWith(SpringExtension.class)
