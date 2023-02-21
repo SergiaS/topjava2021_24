@@ -1,6 +1,5 @@
 package ru.javawebinar.topjava.web.user;
 
-
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
